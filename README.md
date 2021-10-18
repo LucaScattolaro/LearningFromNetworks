@@ -1,3 +1,3 @@
-# LearningFromNetworks
-Project LEarning from Networks
+# Project Learning From Networks
+
 
