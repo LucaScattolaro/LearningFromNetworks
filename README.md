@@ -1,2 +1,3 @@
 # LearningFromNetworks
-LearningFromNetworks
+Project LEarning from Networks
+
