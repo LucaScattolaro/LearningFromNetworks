@@ -5,7 +5,9 @@
 - We want	to understand	what motifs	are	more surprising	in Twitch
 **Data**
 - We are going to use this network:
-  - https://snap.stanford.edu/data/twitch_gamers.html
+  - https://snap.stanford.edu/data/twitch_gamers.html with:
+      - Nodes	168,114
+      - Edges	6,797,557
 
 
 **Method**	
