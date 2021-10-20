@@ -1,0 +1,16 @@
+# What	are	the	Motifs	in	Our	Favorite	Social	Network?	
+
+## Motivation:		
+• we	want	to	understand	what	motifs	are	more	surprising	in	
+our	favorite	social	network	
+• Data:	these	networks	from	publicly	available	datasets	
+[DETAILS]	
+Method:	
+• Problem:	compute	the	motifs	for	the	network	[DETAILS]	
+• Algorithms:		[DETAILS]	
+Intended	experiments:	
+• we	will	use	the	implementations	available	at	[URL]		
+[DETAILS]	
+• machine	for	experiments:	[DETAILS]	
+• experiments:	compute	motifs;	try	to	understand	what	
+these	motifs	represent	[DETAILS]	
