@@ -1,5 +1,7 @@
 # Project_Proposal
 ## Finding significant Nodes in Twitch network with Node Features and find important motifs.
+Social network analysis is a field of study that attempt to understand relationships between entities in a network based on the assumption about the “importance” of relationship between entities.
+In this Project we are going to use the twitch dataset 
 **Motivation**
 - We want to find the most influent people in this Social Network: It is an important aspect usefull for marketing, society and so on...
 - We want	to understand	what motifs	are	more surprising	in Twitch
