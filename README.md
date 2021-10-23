@@ -41,7 +41,7 @@ Problem: compute the clustering coefficient for the graph:
 Problem: compute the motifs of the network:
  - Algorithms: the ones that we will see during the course (since we did not cover this topic yet)
 
-**Baseline and Machines**:	
+**Baseline and Machines** 	
 We will use the following implementations:
   - Closeness centrality 
     - Exact version ----> https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.centrality.closeness_centrality.html#networkx.algorithms.centrality.closeness_centrality
@@ -56,7 +56,7 @@ We will use the following implementations:
   
   - Motifs ---> we don't know yet, we will choose after we have covered this topic in class
 
-**Machine for experiments**: We are going to use different machines due to avalability:
+**Machine for experiments** We are going to use different machines due to avalability:
   - PC1: 
       - CPU: Intel(R) Core(TM) i7-2670QM CPU @ 2.20GHz
       - RAM: 6,0 GB 
@@ -70,7 +70,7 @@ We will use the following implementations:
       - CPU: Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz-1.80 GHz
       - RAM: 16,0 GB 
 
-**Experiments**:	
+**Experiments** 
   - Compute centralities on the data, compare the results and create the rankings
   - Compute clustering coefficients and analyze them
   - Compute motifs and try to understand what these motifs represent
