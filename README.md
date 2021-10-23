@@ -14,14 +14,14 @@ We are going to use a social network of Twitch users collected from the public A
 Nodes are Twitch users and edges are mutual follower relationships between them. The graph forms a single strongly connected component without missing attributes. The dataset can be found here: https://snap.stanford.edu/data/twitch_gamers.html
       
 Here we report some dataset statistics:
-- Directed	No.
+- Directed	      No.
 - Node features	No.
 - Edge features	No.
 - Node labels	Yes.
-- Temporal	No.
-- Nodes	168,114
-- Edges	6,797,557
-- Density	0.0005
+- Temporal	      No.
+- Nodes	      168,114
+- Edges	      6,797,557
+- Density	      0.0005
 - Transitvity	0.0184
 
 **Method**	
@@ -35,31 +35,45 @@ Problem: compute the centrality scores for all nodes using exact algorithms and 
     - Approximate version    
 
 Problem: compute the clustering coefficient for the graph:
- - Algorithms: the ones that we will see during the course (since we did not cover this topic yet)
+ - Local clustering coefficient
+ - Global clustering coefficient
     
 Problem: compute the motifs of the network:
  - Algorithms: the ones that we will see during the course (since we did not cover this topic yet)
 
 **Baseline and Machines**:	
-We	will	use	the	following implementations:
+We will use the following implementations:
   - Closeness centrality 
     - Exact version ----> https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.centrality.closeness_centrality.html#networkx.algorithms.centrality.closeness_centrality
-    - Eppstein-Wang algorithm  
-    - Chechik-Cohen-Kaplan algorithm
+    - Eppstein-Wang algorithm ----> we will implement it ourselves (using the pseudocode we have seen in the lessons)
   - Betweeness centrality
     - Exact version ----> https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.centrality.betweenness_centrality.html#networkx.algorithms.centrality.betweenness_centrality
-    - Approximate version   
+    - Approximate version ----> we will implement it ourselves (using the pseudocode we have seen in the lessons)
 
-.	It	provides exact	methods	and	approximate	methods	and we will modify it to calculate the approximations
-- Machines	for	experiments: We are going to use different machines due to avalability:
-  - PC1: (Luca) 
-  - PC2: (Alessandro)
-  - PC3: (Alberto)
-  - PC4: (Lavoro Luca)
+  - Clustering coefficient
+    - Local clustering coefficient ---> we will implement it ourselves (using the pseudocode we have seen in the lessons)
+    - Global clustering coefficient ---> we will implement it ourselves (using the pseudocode we have seen in the lessons)
+  
+  - Motifs ---> we don't know yet, we will choose after we have covered this topic in class
+
+**Machine for experiments**: We are going to use different machines due to avalability:
+  - PC1: 
+      - CPU: Intel(R) Core(TM) i7-2670QM CPU @ 2.20GHz
+      - RAM: 6,0 GB 
+  - PC2: 
+      - CPU: Intel(R) Core(TM) i5-3570K CPU @ 3.40GHz
+      - RAM: 8,0 GB 
+  - PC3: 
+      - CPU: Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz-1.80 GHz
+      - RAM: 16,0 GB   
+  - PC4 (LAVORO LUCA): 
+      - CPU: Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz-1.80 GHz
+      - RAM: 16,0 GB 
 
 **Experiments**:	
-  - compute	centralities	on	the	data and create a rank	
-  - compute	motifs and try to understand what these	motifs represent
+  - Compute centralities on the data, compare the results and create the rankings
+  - Compute clustering coefficients and analyze them
+  - Compute motifs and try to understand what these motifs represent
 
 
 
