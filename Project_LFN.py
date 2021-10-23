@@ -1,1 +1,3 @@
-ciao
+import numpy as np
+
+print('ciao')
