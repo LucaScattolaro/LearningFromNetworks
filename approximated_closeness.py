@@ -5,6 +5,8 @@ import random as rd
 
 def approximate_closeness_centrality(G, k):
     """
+    Approximated closeness centrality implementation using the Eppstein-Wang algorithm.
+
     :param G: weighted/unweighted graph
     :param k: number of iterations
     :return: dictionary containing the approximated closeness centralities for each node
