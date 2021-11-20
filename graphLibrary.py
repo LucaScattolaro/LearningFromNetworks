@@ -4,6 +4,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import random
 import scipy.special
+import time
 
 
 #########        Clustering Coefficient Methods
@@ -79,3 +80,53 @@ def globalClusteringCoefficient(G):
                     num_t=num_t+1
 
     return num_t/(6*scipy.special.binom(len(nodes), 3))
+
+#########        Motifs Methods
+
+def enumerateSubgraphs(G,k):
+    #--return all subgraphs of size k in G
+    nodes=list(G.nodes)
+    v_extension=list()
+    subgraphs=list()
+    i=0
+    for node in nodes:
+        start = time.time()
+        neighbors_v=list(G.neighbors(node))
+        for u in neighbors_v:
+            if(u>node):
+                v_extension.append(u)
+                v_subgraph=list()
+                v_subgraph.append(node)
+                subgraphs.append(extendSubgraphs(v_subgraph,v_extension,node,k,G))
+        print('iteration: ', i, '    --->    time:  ', time.time() - start)
+        i = i + 1
+    return subgraphs
+
+
+def extendSubgraphs(v_subgraph,v_extension,v,k,G):
+    if (len(v_subgraph)==k):
+        return G.subgraph(v_subgraph)
+    v_prime_extension=list()
+    while (len(v_extension)>0):
+        w=v_extension.pop()
+        n_excl=list(G.neighbors(w))
+        for u in n_excl:
+            flag=True
+            subgraph_n=list()
+            if(u in v_subgraph):
+                n_excl.remove(u)
+                flag=False
+            if(flag):
+                for h in v_subgraph:
+                    subgraph_n.append(list(G.neighbors(h)))
+                if(u in subgraph_n):
+                    n_excl.remove(u)
+                    flag=False
+            if (flag and u>v):
+                v_prime_extension.append(u)
+        v_subgraph.append(w)
+        extendSubgraphs(v_subgraph,v_prime_extension,v,k,G)
+    return
+
+def countSubgraphs(subgraphs):
+    return len(subgraphs)

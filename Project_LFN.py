@@ -20,7 +20,7 @@ twitchGraph = nx.from_pandas_edgelist(twitchEdges, 'numeric_id_1', 'numeric_id_2
 
 
 
-graphLibrary.EstimateLCCs(twitchGraph,1)
+###graphLibrary.EstimateLCCs(twitchGraph,1)
 
 ########       LOCAL CLUSTERING COEFFICIENT FOR ALL NODES
 #--Compute local clustering coefficient and save it into a Dictionary in order to save it later
@@ -52,3 +52,8 @@ graphLibrary.EstimateLCCs(twitchGraph,1)
 # #--Close the file
 # f.close()
 
+### ESU algorithm
+
+#motifs=graphLibrary.enumerateSubgraphs(twitchGraph,2)
+
+#print(graphLibrary.countSubgraphs(motifs))
