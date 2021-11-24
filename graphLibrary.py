@@ -5,6 +5,29 @@ import matplotlib.pyplot as plt
 import random
 import scipy.special
 import time
+import matplotlib.colors as mcolors
+
+
+#########        Drawing Functions
+def draw(G, pos, measures, measure_name):
+    nodes = nx.draw_networkx_nodes(G, pos, node_size=250, cmap=plt.cm.plasma,node_color=list(measures.values()),nodelist=measures.keys())
+    nodes.set_norm(mcolors.SymLogNorm(linthresh=0.01, linscale=1, base=10))
+    labels = nx.draw_networkx_labels(G, pos)
+    edges = nx.draw_networkx_edges(G, pos)
+    plt.title(measure_name)
+    plt.colorbar(nodes)
+    plt.axis('off')
+    plt.show()
+
+
+def drawGraph(G,pos):
+    nodes = nx.draw_networkx_nodes(G, pos, node_size=250)
+    nodes.set_norm(mcolors.SymLogNorm(linthresh=0.01, linscale=1, base=10))
+    labels = nx.draw_networkx_labels(G, pos)
+    edges = nx.draw_networkx_edges(G, pos)
+    plt.title('Graph')
+    plt.axis('off')
+    plt.show()
 
 
 #########        Clustering Coefficient Methods
@@ -18,15 +41,17 @@ def LCC(G,v):
                 num_t=num_t+1
     
     deg_v=len(neighbors_v)
-
-    return deg_v, num_t/(deg_v*(deg_v-1))
+    if deg_v==1:
+        return num_t
+    else:
+        return num_t/(deg_v*(deg_v-1))
 
 def LCCs(G):
     #--Calculate the exact local clustering coefficient for all the nodes of grapgh G
     lccs={}
     for node in list(G.nodes):
-        deg, lcc=LCC(G,node)
-        lccs[node]={'degree':deg, 'localCC':lcc}
+        lcc=LCC(G,node)
+        lccs[node]=lcc
     return lccs
 
 def EstimateLCCs(G,k):
@@ -63,7 +88,10 @@ def EstimateLCCs(G,k):
         for u in neighbors_v:
             sum=sum+((Z[frozenset(u,node)]/(Z[frozenset(u,node)]+k))*(num_neigh+G.neighbors(u)))
         
-        lccs[node]=(0.5*sum)/(num_neigh*(num_neigh-1))
+        if num_neigh==1:
+            lccs[node]=(0.5*sum)
+        else:
+            lccs[node]=(0.5*sum)/(num_neigh*(num_neigh-1))
 
     return lccs
 
@@ -79,7 +107,9 @@ def globalClusteringCoefficient(G):
                 if u1!=u2 and G.has_edge(u1,u2):
                     num_t=num_t+1
 
-    return num_t/(6*scipy.special.binom(len(nodes), 3))
+    return num_t,num_t/(6*scipy.special.binom(len(nodes), 3))
+
+
 
 #########        Motifs Methods
 
