@@ -6,7 +6,25 @@ import random
 import scipy.special
 import time
 import matplotlib.colors as mcolors
+import csv
+import collections
 
+#########        Saving CSV file given a dictionary
+def saveDictionaryCSV(nameFile, dict, header,order):
+    if order:
+        print('Order Dictionary')
+        dict=collections.OrderedDict(sorted(dict.items()))
+
+    print('Write Data of Dictionary')
+    f = open(nameFile, 'w')
+    writer = csv.writer(f)
+    #--Write the Header to the csv file
+    writer.writerow(header)
+    #--Write the Data of nodes to the csv file
+    for k, v in dict.items(): 
+        writer.writerow([k, v])
+    #--Close the file
+    f.close()
 
 #########        Drawing Functions
 def draw(G, pos, measures, measure_name):
@@ -68,15 +86,16 @@ def EstimateLCCs(G,k):
 
     V=list(range(0, G.number_of_nodes()))
     for i in range(k):
+        print('Iteration : ',i,'/',k)
         random.shuffle(V)
         min_v={}
         for node in nodes:
-            print('Node: ',node)
             neighbors=list(G.neighbors(node))
-            min_v[node]=min([V[x] for x in neighbors]) 
+            min_v[node]=min([V[x-1] for x in neighbors]) 
+            print('  Node: ',node,'  min:',min_v[node],'   pi: ',V)
 
         for edge in edges:
-            if min_v[edge[0]]==min_v[edge[0]]:
+            if min_v[edge[0]]==min_v[edge[1]]:
                 Z[frozenset(edge)]=Z[frozenset(edge)]+1
 
     lccs={}
@@ -86,7 +105,7 @@ def EstimateLCCs(G,k):
 
         sum=0
         for u in neighbors_v:
-            sum=sum+((Z[frozenset(u,node)]/(Z[frozenset(u,node)]+k))*(num_neigh+G.neighbors(u)))
+            sum=sum+((Z[frozenset((u,node))]/(Z[frozenset((u,node))]+k))*(num_neigh+len(list(G.neighbors(u)))))
         
         if num_neigh==1:
             lccs[node]=(0.5*sum)

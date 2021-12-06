@@ -1,7 +1,8 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
-
+import graphLibrary as graphLib
+import time
 
 def LCC(G,v):
     #--Calculate the exact local clustering coefficient of a node v of grapgh G
@@ -55,8 +56,21 @@ G.add_edges_from([(1, 2), (1, 3),(2, 3), (1, 4), (2, 4),(6,7),(5, 4),(6, 4)])
 pos = nx.spring_layout(G, seed=675)
 
 
-drawGraph(G,pos)
-draw(G, pos, nx.degree_centrality(G), 'Degree Centrality')
-draw(G,pos,LCCs(G),'Local Clustering Coeff')
+# drawGraph(G,pos)
+# draw(G, pos, nx.degree_centrality(G), 'Degree Centrality')
+start=time.time()
+lccs=LCCs(G)
+print('LCCS time: ',time.time()-start)
+
+start2=time.time()
+approxLccs=graphLib.EstimateLCCs(G,6)
+
+graphLib.saveDictionaryCSV('test.csv',approxLccs,['node', 'Approx_local_CC'],order=True)
+print('approx LCCS time: ',time.time()-start2)
+
+
+
+draw(G,pos,lccs,'Local Clustering Coeff')
+draw(G,pos,approxLccs,'Estimate Local Clustering Coeff')
 # draw(G, pos, nx.closeness_centrality(G), 'Closeness Centrality')
 # draw(G, pos, nx.betweenness_centrality(G), 'Betweenness Centrality')
