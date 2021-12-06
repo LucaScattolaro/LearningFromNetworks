@@ -60,5 +60,27 @@ graphLibrary.saveDictionaryCSV('ApproxLCC_k'+str(k)+'.csv',estimateLccs,['node',
 
 ########        MOTIFS - ESU algorithm
 
+<<<<<<< HEAD
 motifs=graphLibrary.enumerateSubgraphs(twitchGraph,2)
 print(graphLibrary.countSubgraphs(motifs))
+=======
+#motifs=graphLibrary.enumerateSubgraphs(twitchGraph,2)
+
+#print(graphLibrary.countSubgraphs(motifs))
+
+#nodes=list(twitchGraph.nodes)
+#n=len(nodes)
+
+#m=len(twitchEdges)
+
+#file= open("graph.txt", "w")
+
+#file.write(str(n)+" "+str(m))
+
+#for node in nodes:
+    #neighbors_v = list(twitchGraph.neighbors(node))
+    #for u in neighbors_v:
+        #file.write("\n"+str(node)+" "+str(u))
+
+#file.close()
+>>>>>>> 0f370a63edc34a53c948aa8d3e634398d8606b69
