@@ -64,7 +64,9 @@ print('LCCS time: ',time.time()-start)
 
 start2=time.time()
 approxLccs=graphLib.EstimateLCCs(G,6)
-
+k=1
+line='Estimation lccs k:'+str(k)+'  --->  '+str(time.time()-start2)+'\n'
+graphLib.saveTime('ComputationalTimes.info', line)
 graphLib.saveDictionaryCSV('test.csv',approxLccs,['node', 'Approx_local_CC'],order=True)
 print('approx LCCS time: ',time.time()-start2)
 

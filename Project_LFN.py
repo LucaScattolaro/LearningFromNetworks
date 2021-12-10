@@ -8,6 +8,7 @@ import time
 import csv
 import collections
 import scipy
+import time
 
 
 ########       CREATION OF THE GRAPH
@@ -36,9 +37,12 @@ twitchGraph = nx.from_pandas_edgelist(twitchEdges, 'numeric_id_1', 'numeric_id_2
 
 
 ###            Approximate Local Clustering Coefficient
-# k=10
-# estimateLccs=graphLibrary.EstimateLCCs(twitchGraph,k)
-# graphLibrary.saveDictionaryCSV('ApproxLCC_k'+str(k)+'.csv',estimateLccs,['node', 'Approx_local_CC'],order=True)
+k=1000
+start=time.time()
+estimateLccs=graphLibrary.EstimateLCCs(twitchGraph,k)
+line='Estimation lccs k:'+str(k)+'  --->  '+str(time.time()-start)
+graphLibrary.saveTime('ComputationalTimes.info', line)
+graphLibrary.saveDictionaryCSV('ApproxLCC_k'+str(k)+'.csv',estimateLccs,['node', 'Approx_local_CC'],order=True)
 
 
 ###            Global Clustering Coefficient

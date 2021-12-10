@@ -78,6 +78,13 @@ def LCCs(G):
         i=i+1
     return lccs
 
+def saveTime(filename,line):
+    # Open a file with access mode 'a'
+    print('saving value')
+    file_object = open(filename, 'a')
+    file_object.write(line)
+    # Close the file
+    file_object.close()
 
 def EstimateLCCs(G,k):
     #--Calculate the approximate local clustering coefficient for all the nodes of graph G
