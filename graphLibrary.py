@@ -67,23 +67,30 @@ def LCC(G,v):
 def LCCs(G):
     #--Calculate the exact local clustering coefficient for all the nodes of grapgh G
     lccs={}
-    for node in list(G.nodes):
+    print('Local Clustering Coefficient')
+    nodes=list(G.nodes)
+    lenght=len(nodes)
+    i=0
+    for node in nodes:
+        print('iteration: ',i,'/',lenght)
         lcc=LCC(G,node)
         lccs[node]=lcc
+        i=i+1
     return lccs
+
 
 def EstimateLCCs(G,k):
     #--Calculate the approximate local clustering coefficient for all the nodes of graph G
     edges=list(G.edges())
     nodes=list(G.nodes)
     Z={}
-    i=0
+    print('Initialization')
     for edge in edges:
         Z[frozenset(edge)]=0
-        i=i+1
-        if i==10:
-            break
-
+        
+        
+    print('len edges: ',len(edges))
+    print('len Z: ',len(Z))
     V=list(range(0, G.number_of_nodes()))
     for i in range(k):
         print('Iteration : ',i,'/',k)
@@ -92,13 +99,15 @@ def EstimateLCCs(G,k):
         for node in nodes:
             neighbors=list(G.neighbors(node))
             min_v[node]=min([V[x-1] for x in neighbors]) 
-            print('  Node: ',node,'  min:',min_v[node],'   pi: ',V)
+            #print('  Node: ',node,'  min:',min_v[node],'   pi: ',V)
 
         for edge in edges:
             if min_v[edge[0]]==min_v[edge[1]]:
                 Z[frozenset(edge)]=Z[frozenset(edge)]+1
 
     lccs={}
+
+    print('Creation of lccs Values for all nodes')
     for node in nodes:
         neighbors_v=list(G.neighbors(node))
         num_neigh=len(neighbors_v)

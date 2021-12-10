@@ -32,13 +32,13 @@ twitchGraph = nx.from_pandas_edgelist(twitchEdges, 'numeric_id_1', 'numeric_id_2
 ########       CLUSTERING COEFFICIENTS
 ###            Local Clustering Coefficient
 # lccs=graphLibrary.LCCs(twitchGraph)
-# graphLibrary.saveDictionaryCSV('localClusteringCoefficients.csv',lccs,['node', 'local_CC'],order=True)
+# graphLibrary.saveDictionaryCSV('localClusteringCoefficients__.csv',lccs,['node', 'local_CC'],order=True)
 
 
 ###            Approximate Local Clustering Coefficient
-k=10
-estimateLccs=graphLibrary.EstimateLCCs(twitchGraph,k)
-graphLibrary.saveDictionaryCSV('ApproxLCC_k'+str(k)+'.csv',estimateLccs,['node', 'Approx_local_CC'],order=True)
+# k=10
+# estimateLccs=graphLibrary.EstimateLCCs(twitchGraph,k)
+# graphLibrary.saveDictionaryCSV('ApproxLCC_k'+str(k)+'.csv',estimateLccs,['node', 'Approx_local_CC'],order=True)
 
 
 ###            Global Clustering Coefficient
@@ -60,10 +60,10 @@ graphLibrary.saveDictionaryCSV('ApproxLCC_k'+str(k)+'.csv',estimateLccs,['node',
 
 ########        MOTIFS - ESU algorithm
 
-<<<<<<< HEAD
-motifs=graphLibrary.enumerateSubgraphs(twitchGraph,2)
-print(graphLibrary.countSubgraphs(motifs))
-=======
+# 
+# motifs=graphLibrary.enumerateSubgraphs(twitchGraph,2)
+# print(graphLibrary.countSubgraphs(motifs))
+# 
 #motifs=graphLibrary.enumerateSubgraphs(twitchGraph,2)
 
 #print(graphLibrary.countSubgraphs(motifs))
@@ -83,4 +83,4 @@ print(graphLibrary.countSubgraphs(motifs))
         #file.write("\n"+str(node)+" "+str(u))
 
 #file.close()
->>>>>>> 0f370a63edc34a53c948aa8d3e634398d8606b69
+
