@@ -21,28 +21,44 @@ twitchEdges = pd.read_csv('twitch_gamers/large_twitch_edges.csv')
 twitchGraph = nx.from_pandas_edgelist(twitchEdges, 'numeric_id_1', 'numeric_id_2')
 
 
-
-
 ########       DRAWING GRAPH
+
 # pos = nx.spring_layout(twitchGraph, seed=675)
 # graphLibrary.drawGraph(twitchGraph,pos)
 
 
 
 
+
+
+########       CENTRALITIES
+###            Betweeness Centrality
+# b=nx.betweenness_centrality(twitchGraph)
+# graphLibrary.saveDictionaryCSV('ResultsCentralities/testBetween.csv',b,['node', 'value'],order=True)
+
+print("Start")
+start=time.time()
+###            Closeness Centrality
+c=nx.closeness_centrality(twitchGraph)
+graphLibrary.saveDictionaryCSV('ResultsCentralities/testClose.csv',c,['node', 'value'],order=True)
+print('Time: ',time.time()-start)
+
+
+
 ########       CLUSTERING COEFFICIENTS
+
 ###            Local Clustering Coefficient
 # lccs=graphLibrary.LCCs(twitchGraph)
 # graphLibrary.saveDictionaryCSV('localClusteringCoefficients__.csv',lccs,['node', 'local_CC'],order=True)
 
 
 ###            Approximate Local Clustering Coefficient
-k=1000
-start=time.time()
-estimateLccs=graphLibrary.EstimateLCCs(twitchGraph,k)
-line='Estimation lccs k:'+str(k)+'  --->  '+str(time.time()-start)
-graphLibrary.saveTime('ComputationalTimes.info', line)
-graphLibrary.saveDictionaryCSV('ApproxLCC_k'+str(k)+'.csv',estimateLccs,['node', 'Approx_local_CC'],order=True)
+# k=1000
+# start=time.time()
+# estimateLccs=graphLibrary.EstimateLCCs(twitchGraph,k)
+# line='Estimation lccs k:'+str(k)+'  --->  '+str(time.time()-start)
+# graphLibrary.saveTime('ComputationalTimes.info', line)
+# graphLibrary.saveDictionaryCSV('ApproxLCC_k'+str(k)+'.csv',estimateLccs,['node', 'Approx_local_CC'],order=True)
 
 
 ###            Global Clustering Coefficient
@@ -64,7 +80,6 @@ graphLibrary.saveDictionaryCSV('ApproxLCC_k'+str(k)+'.csv',estimateLccs,['node',
 
 ########        MOTIFS - ESU algorithm
 
-# 
 # motifs=graphLibrary.enumerateSubgraphs(twitchGraph,2)
 # print(graphLibrary.countSubgraphs(motifs))
 # 
