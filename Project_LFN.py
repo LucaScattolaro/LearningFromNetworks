@@ -55,22 +55,12 @@ print('Time: ',time.time()-start)
 
 
 ###            Approximate Local Clustering Coefficient
-<<<<<<< HEAD
-k=int(len(twitchNodes)/10)
-print(k)
-start=time.time()
-estimateLccs=graphLibrary.EstimateLCCs(twitchGraph,k)
-line='Estimation lccs k:'+str(k)+'  --->  '+str(time.time()-start)
-graphLibrary.saveTime('ComputationalTimes.info', line)
-graphLibrary.saveDictionaryCSV('ApproxLCC_k'+str(k)+'.csv',estimateLccs,['node', 'Approx_local_CC'],order=True)
-=======
 # k=1000
 # start=time.time()
 # estimateLccs=graphLibrary.EstimateLCCs(twitchGraph,k)
 # line='Estimation lccs k:'+str(k)+'  --->  '+str(time.time()-start)
 # graphLibrary.saveTime('ComputationalTimes.info', line)
 # graphLibrary.saveDictionaryCSV('ApproxLCC_k'+str(k)+'.csv',estimateLccs,['node', 'Approx_local_CC'],order=True)
->>>>>>> aa22696c68443e73d40d03382d737a8730ea44a6
 
 
 ###            Global Clustering Coefficient
