@@ -58,21 +58,29 @@ pos = nx.spring_layout(G, seed=675)
 
 # drawGraph(G,pos)
 # draw(G, pos, nx.degree_centrality(G), 'Degree Centrality')
-start=time.time()
-lccs=LCCs(G)
-print('LCCS time: ',time.time()-start)
+# start=time.time()
+# lccs=LCCs(G)
+# print('LCCS time: ',time.time()-start)
 
-start2=time.time()
-approxLccs=graphLib.EstimateLCCs(G,6)
-k=1
-line='Estimation lccs k:'+str(k)+'  --->  '+str(time.time()-start2)+'\n'
-graphLib.saveTime('ComputationalTimes.info', line)
-graphLib.saveDictionaryCSV('test.csv',approxLccs,['node', 'Approx_local_CC'],order=True)
-print('approx LCCS time: ',time.time()-start2)
+# start2=time.time()
+# approxLccs=graphLib.EstimateLCCs(G,6)
+# k=1
+# line='Estimation lccs k:'+str(k)+'  --->  '+str(time.time()-start2)+'\n'
+# graphLib.saveTime('ComputationalTimes.info', line)
+# graphLib.saveDictionaryCSV('test.csv',approxLccs,['node', 'Approx_local_CC'],order=True)
+# print('approx LCCS time: ',time.time()-start2)
+
+# draw(G,pos,lccs,'Local Clustering Coeff')
+# draw(G,pos,approxLccs,'Estimate Local Clustering Coeff')
 
 
 
-draw(G,pos,lccs,'Local Clustering Coeff')
-draw(G,pos,approxLccs,'Estimate Local Clustering Coeff')
-# draw(G, pos, nx.closeness_centrality(G), 'Closeness Centrality')
-# draw(G, pos, nx.betweenness_centrality(G), 'Betweenness Centrality')
+########   CENTRALITIES
+b=nx.betweenness_centrality(G)
+graphLib.saveDictionaryCSV('ResultsCentralities/testBetween.csv',b,['node', 'value'],order=True)
+
+c=nx.closeness_centrality(G)
+graphLib.saveDictionaryCSV('ResultsCentralities/testClose.csv',c,['node', 'value'],order=True)
+
+draw(G, pos, c, 'Closeness Centrality')
+draw(G, pos, b, 'Betweenness Centrality')
