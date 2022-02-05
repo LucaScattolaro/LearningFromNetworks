@@ -2,9 +2,29 @@ import networkx as nx
 import pandas as pd
 import random as rd
 import math
+import collections
+import csv
 from sys import maxsize
 from collections import deque
 from numpy.random import choice
+import time
+
+
+def saveDictionaryCSV(nameFile, dict, header, order):
+    if order:
+        print('Order Dictionary')
+        dict = collections.OrderedDict(sorted(dict.items()))
+
+    print('Write Data of Dictionary')
+    f = open(nameFile, 'w')
+    writer = csv.writer(f)
+    # --Write the Header to the csv file
+    writer.writerow(header)
+    # --Write the Data of nodes to the csv file
+    for k, v in dict.items():
+        writer.writerow([k, v])
+    # --Close the file
+    f.close()
 
 
 def add_edge(adj, src, dest):
@@ -84,8 +104,7 @@ def shortest_paths(adj, n, start, end):
 
 
 def number_shortest_paths(adj, n, start, end):
-    paths = shortest_paths(adj, n, start, end)
-    return len(paths)
+    return len(shortest_paths(adj, n, start, end))
 
 
 def compute_vertex_diameter_approximation(G):
@@ -107,7 +126,8 @@ def approximate_betweenness_centrality(G, epsilon, delta=0.1, c=0.5):
 
     :param G: weighted/unweighted graph
     :param epsilon: desired accuracy
-    :param delta: used to select the desired confidence (which is expressed by 1-delta) for the accuracy; we set delta=0.1 as in the paper
+    :param delta: used to select the desired confidence (which is expressed by 1-delta) for the accuracy; we set
+                  delta=0.1 as in the paper
     :param c: constant (we set c=0.5 as in Löffler and Phillips, 2009)
     :return: dictionary containing the approximated betweenness centralities for each node
     """
@@ -115,6 +135,7 @@ def approximate_betweenness_centrality(G, epsilon, delta=0.1, c=0.5):
     # Initialize variables
     n = len(list(G.nodes))
     vertex_diameter_approximation = compute_vertex_diameter_approximation(G)
+    print("VD(G) = {}".format(vertex_diameter_approximation))
     r = int((c / epsilon ** 2) * (math.floor(math.log2(vertex_diameter_approximation - 2)) + math.log(1 / delta)))
     approximated_centralities = {}
 
@@ -132,7 +153,8 @@ def approximate_betweenness_centrality(G, epsilon, delta=0.1, c=0.5):
     # Loop for the number of iterations r
     print("r = {}".format(r))
     for i in range(0, r):
-        # print("-------- ITERAZIONE NUMERO {} ------------".format(i))
+        start_time = time.time()
+        print("-------- ITERAZIONE NUMERO {} su {}------------".format(i, r))
         # Randomly sample a pair of nodes and compute all the shortest paths between them
         u, v = rd.sample(G.nodes, 2)
         paths = shortest_paths(adj, n, u, v)
@@ -149,17 +171,17 @@ def approximate_betweenness_centrality(G, epsilon, delta=0.1, c=0.5):
                 # print("u: {}".format(u))
                 # print("t: {}".format(t))
 
-                # Compute the number of shortest paths between u and t
-                sigma_u_t = number_shortest_paths(adj, n, u, t)
-                # print(sigma_u_t)
-                # print()
-
                 # Initialize variables. Pu_t contains the subset of neighbors of t that
                 # are predecessors of t along the shortest paths from u to t; each of these nodes
                 # will be sampled with a probability defined in probability_distribution
                 Pu_t = []
                 probability_distribution = []
                 paths_u_t = shortest_paths(adj, n, u, t)
+
+                # Compute the number of shortest paths between u and t
+                sigma_u_t = len(paths_u_t)
+                # print(sigma_u_t)
+                # print()
 
                 # For each shortest path
                 for j in range(0, len(paths_u_t)):
@@ -206,6 +228,7 @@ def approximate_betweenness_centrality(G, epsilon, delta=0.1, c=0.5):
 
                 # Update t
                 t = z
+        print('Iteration time: {}'.format(time.time() - start_time))
 
     return approximated_centralities
 
@@ -214,28 +237,15 @@ if __name__ == "__main__":
     twitchNodes = pd.read_csv('twitch_gamers/large_twitch_features.csv')
     twitchEdges = pd.read_csv('twitch_gamers/large_twitch_edges.csv')
 
+    print("Loading graph...")
     G = nx.Graph()
     G.add_nodes_from(twitchNodes)
     G = nx.from_pandas_edgelist(twitchEdges, 'numeric_id_1', 'numeric_id_2')
-
-    # adj = [[] for _ in range(len(list(G.nodes)))]
-    # for (src, dst) in G.edges:
-    #    add_edge(adj, src, dst)
-    # src, dst = rd.sample(G.nodes, 2)
-    # paths = shortest_paths(adj, len(list(G.nodes)), src, dst)
-    # print(src)
-    # print(dst)
-    # print(paths)
+    print("Finished!")
 
     # G.add_nodes_from([0, 1, 2, 3, 4, 5, 6])
     # G.add_edges_from([(0, 1), (1, 2), (1, 3), (2, 4), (3, 4), (3, 5), (4, 6), (5, 6)])
 
-    adj = [[] for _ in range(len(list(G.nodes)))]
-    for (src, dst) in G.edges:
-        add_edge(adj, src, dst)
-    paths = shortest_paths(adj, len(list(G.nodes)), 0, 6)
-    # print(paths)
-    # print(len(paths))
-
+    print("Starting computing centralities...")
     centralities = approximate_betweenness_centrality(G, 0.01)
-    print(centralities)
+    saveDictionaryCSV('approximated_betweenness_results.csv', centralities, ['node', 'betweenness centrality'], order=True)
