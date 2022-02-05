@@ -157,6 +157,8 @@ def approximate_betweenness_centrality(G, epsilon, delta=0.1, c=0.5):
         print("-------- ITERAZIONE NUMERO {} su {}------------".format(i, r))
         # Randomly sample a pair of nodes and compute all the shortest paths between them
         u, v = rd.sample(G.nodes, 2)
+        while (u > v):
+            u, v = rd.sample(G.nodes, 2)
         paths = shortest_paths(adj, n, u, v)
 
         # Check if there are at least one path
