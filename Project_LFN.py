@@ -14,9 +14,11 @@ import time
 ########       CREATION OF THE GRAPH
 twitchGraph = nx.Graph()
 #--Nodes
-#twitchNodes = pd.read_csv('twitch_gamers/large_twitch_features.csv')
+twitchNodes = pd.read_csv('twitch_gamers/large_twitch_features.csv')
 #--Edges
+#print(len(twitchNodes))
 twitchEdges = pd.read_csv('twitch_gamers/large_twitch_edges.csv')
+#print(len(twitchEdges))
 #--Final Graph
 twitchGraph = nx.from_pandas_edgelist(twitchEdges, 'numeric_id_1', 'numeric_id_2')
 
