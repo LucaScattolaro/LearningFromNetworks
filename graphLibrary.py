@@ -34,6 +34,16 @@ def createRankingFromCSVValues(nameFile, header, n, descending=True):
     return {k: ordered_dictionary[k] for k in list(ordered_dictionary)[:n]}
 
 
+def printRanking(ranking, header):
+    # This function prints the ranking produced with createRankingFromCSVValues()
+    print("---------------- RANKING ----------------")
+    print("          {}           {}".format(header[0], header[1]))
+    i = 1
+    for key, value in ranking.items():
+        print("Number {}: {}           {}".format(i, key, value))
+        i += 1
+
+
 #########        Saving CSV file given a dictionary
 def saveDictionaryCSV(nameFile, dict, header,order):
     if order:
