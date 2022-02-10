@@ -135,11 +135,12 @@ def _define_probability_distribution(adj, n, u, t):
                 # update sigma_u_predecessor
                 sigma_u_predecessor += 1
             else:
-                # Now, sigma_u_predecessor contains the total number of shortest paths from
-                # u to t that contain the given predecessor; so, we can define its probability
-                # of being chosen for the random path sampling as the number of shortest paths
-                # between u and the given predecessor divided by the number of shortest paths
-                # between u and t
+                # We have a new predecessor; now, sigma_u_predecessor contains the total number 
+                # of shortest paths from u to t that contain the old predecessor; so, we can 
+                # define its probability of being chosen for the random path sampling as the 
+                # number of shortest paths between u and the given predecessor divided by the 
+                # number of shortest paths between u and t; moreover, we can add the new predecessor
+                # to Pu_t and set to 1 the number of shortest paths between u and the new predecessor
                 sampling_probability = sigma_u_predecessor / sigma_u_t
                 probability_distribution.append(sampling_probability)
                 Pu_t.append(predecessor)
