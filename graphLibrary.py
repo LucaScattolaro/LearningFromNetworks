@@ -22,17 +22,16 @@ def createRankingFromCSVValues(nameFile, header, n, descending=True):
     second_column = list(data[header[1]])
 
     dictionary = {}
-
-    for i in range(0, len(values)):
+    for i in range(0, len(data)):
         dictionary[first_column[i]] = second_column[i]
 
+    ordered_dictionary = {}
     if descending:
-        sorted = {k: v for k, v in sorted(dictionary.items(), key=lambda item: item[1], reverse=True)}
-    else
-        sorted = {k: v for k, v in sorted(dictionary.items(), key=lambda item: item[1])}
+        ordered_dictionary = {k: v for k, v in sorted(dictionary.items(), key=lambda item: item[1], reverse=True)}
+    else:
+        ordered_dictionary = {k: v for k, v in sorted(dictionary.items(), key=lambda item: item[1])}
 
-    return {k: sorted[k] for k in list(sorted)[:n]}
-
+    return {k: ordered_dictionary[k] for k in list(ordered_dictionary)[:n]}
 
 
 #########        Saving CSV file given a dictionary
