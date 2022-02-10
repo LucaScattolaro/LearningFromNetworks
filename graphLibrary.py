@@ -1,5 +1,6 @@
 from networkx.classes.function import neighbors
 import numpy as np
+import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
 import random
@@ -13,8 +14,24 @@ from ApproximatedCentralitiesLibrary import *
 
 
 #########        Create Ranking given CSV
-def createRankingFromCSVValues():
-    print("ciao")
+def createRankingFromCSVValues(nameFile, header, n, descending=True):
+    # Produces ranking of the first n entries; descending by default
+    data = pd.read_csv(nameFile)
+
+    first_column = list(data[header[0]])
+    second_column = list(data[header[1]])
+
+    dictionary = {}
+
+    for i in range(0, len(values)):
+        dictionary[first_column[i]] = second_column[i]
+
+    if descending:
+        sorted = {k: v for k, v in sorted(dictionary.items(), key=lambda item: item[1], reverse=True)}
+    else
+        sorted = {k: v for k, v in sorted(dictionary.items(), key=lambda item: item[1])}
+
+    return {k: sorted[k] for k in list(sorted)[:n]}
 
 
 
