@@ -66,9 +66,9 @@ We will use the following implementations:
   - PC3: 
       - CPU: Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz-1.80 GHz
       - RAM: 16,0 GB   
-  - PC4 (LAVORO LUCA): 
-      - CPU: Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz-1.80 GHz
-      - RAM: 16,0 GB 
+  - PC4: 
+      - CPU: : 11th Gen Intel(R) Core(TM) i5-11600K @ 3.90GHz
+      - RAM: 32,0 GB 
 
 **Experiments** 
   - Compute centralities on the data, compare the results and create the rankings
