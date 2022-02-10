@@ -1,16 +1,14 @@
 # Instructions
-We provide a script `test.py` that allows you to test all our methods using a dummy graph. Nevertheless, we also provide instructions on how to import these libraries in order to try out our methods and test the code. Notice that these implementations are designed to work on `networkx` graphs.
+We provide a script `Project_LFN.py` that allows you to test all our methods. Nevertheless, we also provide instructions on how to import the library that contains all the functions in order to try it out. Notice that these implementations are designed to work on `networkx` graphs.
 
-### Approximated Centralities
-For the approximated centralities, the _Eppstein-Wang algorithm_ and the _Riondato-Kornaropoulos algorithm_ are implemented in `ApproximatedCentralitiesLibrary.py`. To import  the library into your code, just write:
+### Graph Library
+`Graph Library` is defined in `graphLibrary.py`. It contains all the methods to compute the centralities, the clustering coefficients and the motifs plus some helper functions that allow to draw a graph, save the results in a `.csv` file or produce a ranking of scores (e.g. for the centralities). To import the library into your code, just write:
 ```
-from ApproximatedCentralitiesLibrary import *
+import graphLibrary as gl
 ```
-Then, you can call the 2 functions from code as:
+Then, you can call the functions from code as:
 ```
-closeness = approximated_closeness_centrality(G, k)
-betweenness = approximated_betweenness_centrality(G, epsilon)
+closeness = gl.approximated_closeness_centrality(G, k)
+betweenness = gl.approximated_betweenness_centrality(G, epsilon)
+...
 ```
-
-### Clustering Coefficients
-
