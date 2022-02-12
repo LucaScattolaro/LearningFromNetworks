@@ -47,10 +47,9 @@ def printRanking(ranking, header):
 #########        Saving CSV file given a dictionary
 def saveDictionaryCSV(nameFile, dict, header,order):
     if order:
-        print('Order Dictionary')
         dict=collections.OrderedDict(sorted(dict.items()))
 
-    print('Write Data of Dictionary')
+    print('Writing data...')
     f = open(nameFile, 'w')
     writer = csv.writer(f)
     #--Write the Header to the csv file
