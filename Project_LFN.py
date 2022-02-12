@@ -1,140 +1,265 @@
-from cmath import log
-import numpy as np
 import networkx as nx
-import matplotlib.pyplot as plt
-import glob
 import pandas as pd
 import graphLibrary as gl
-import time
-import csv
-import collections
-import scipy
-import time
 import math
+
+def manageDrawing(G):
+    print("Drawing graph...")
+    pos = nx.spring_layout(G, seed=675)
+    gl.drawGraph(G, pos)
+    print("Done!")
+
+
+def manageCentralities(G):
+    print("Select the type of centrality measure you want to compute [1/2/3/4]: ")
+    print("1 <- Closeness Centrality")
+    print("2 <- Approximated Closeness Centrality")
+    print("3 <- Betweenness Centrality")
+    print("4 <- Approximated Betweenness Centrality")
+    choice = int(input())
+
+    while choice != 1 and choice != 2 and choice != 3 and choice != 4:
+        print("Select the type of centrality measure you want to compute [1/2/3/4]: ")
+        print("1 <- Closeness Centrality")
+        print("2 <- Approximated Closeness Centrality")
+        print("3 <- Betweenness Centrality")
+        print("4 <- Approximated Betweenness Centrality")
+        choice = int(input())
+
+    if choice == 1:
+        print("Computing closeness centrality...")
+        centralities = nx.closeness_centrality(G)
+    elif choice == 2:
+        print("Choose k (number of iterations); For a good approximation (with epsilon = 0.1) choose k = {}".format(int(math.log10(len(list(G.nodes))) / 0.01)))
+        k = int(input())
+        print("Computing approximated closeness centrality...")
+        centralities = gl.approximated_closeness_centrality(G, k)
+    elif choice == 3:
+        print("Computing betweenness centrality...")
+        centralities = nx.betweenness_centrality(G)
+    elif choice == 4:
+        print("Choose epsilon (additive error from real values):")
+        epsilon = float(input())
+        print("Computing approximated betweenness centrality...")
+        centralities = gl.approximated_betweenness_centrality(G, epsilon)
+
+    print("Done!")
+
+    print("Do you wish to save the results in a .csv file [y/n]?")
+    save = input()
+    while save != 'y' and save != 'n':
+        print("Do you wish to save the results in a .csv file [y/n]?")
+        save = input()
+
+    if save == 'y':
+        print("Enter the name of the .csv (e.g. foo.csv):")
+        path = input()
+
+        if choice == 1:
+            gl.saveDictionaryCSV(path, centralities, ['node', 'closeness centrality'], order=True)
+        elif choice == 2:
+            gl.saveDictionaryCSV(path, centralities, ['node', 'approximated closeness centrality'], order=True)
+        elif choice == 3:
+            gl.saveDictionaryCSV(path, centralities, ['node', 'betweenness centrality'], order=True)
+        elif choice == 4:
+            gl.saveDictionaryCSV(path, centralities, ['node', 'approximated betweenness centrality'], order=True)
+
+    print("Do you want to visualize a ranking of the values [y/n]?")
+    rank = input()
+    while rank != 'y' and rank != 'n':
+        print("Do you want to visualize a ranking of the values [y/n]?")
+        rank = input()
+
+    if rank == 'y':
+        print("Descending order or ascending order (desc/asc)?")
+        order = input()
+        while order != 'desc' and order != 'asc':
+            print("Descending order or ascending order (desc/asc)?")
+            order = input()
+
+        if order == 'desc':
+            ordered_dictionary = {k: v for k, v in sorted(centralities.items(), key=lambda item: item[1], reverse=True)}
+        elif order == 'asc':
+            ordered_dictionary = {k: v for k, v in sorted(centralities.items(), key=lambda item: item[1])}
+
+        print("How long should the ranking be? Indicate the number n of nodes to be considered:")
+        n = int(input())
+
+        ranking = {k: ordered_dictionary[k] for k in list(ordered_dictionary)[:n]}
+        gl.printRanking(ranking, ['node', 'value'])
+
+        print("Do you wish to save the ranking results in a .csv file [y/n]?")
+        save_ranking = input()
+        while save_ranking != 'y' and save_ranking != 'n':
+            print("Do you wish to save the ranking results in a .csv file [y/n]?")
+            save_ranking = input()
+
+        if save_ranking == 'y':
+            print("Enter the name of the .csv (e.g. foo.csv):")
+            path_ranking = input()
+
+            gl.saveDictionaryCSV(path_ranking, ranking, ['node', 'value'], order=False)
+
+
+def manageClusteringCoefficients(G):
+    print("Select the type of clustering coefficient measure you want to compute [1/2/3/4]: ")
+    print("1 <- Local Clustering Coefficient for one node")
+    print("2 <- Local Clustering Coefficient for all nodes in the graph")
+    print("3 <- Approximated Local Clustering Coefficient for all nodes in the graph")
+    print("4 <- Global Clustering Coefficient")
+    choice = int(input())
+
+    while choice != 1 and choice != 2 and choice != 3 and choice != 4:
+        print("Select the type of clustering coefficient measure you want to compute [1/2/3/4]: ")
+        print("1 <- Local Clustering Coefficient for one node")
+        print("2 <- Local Clustering Coefficient for all nodes in the graph")
+        print("3 <- Approximated Local Clustering Coefficient for all nodes in the graph")
+        print("4 <- Global Clustering Coefficient")
+        choice = int(input())
+
+    if choice == 1:
+        print("Choose the node for which you want to compute the local clustering coefficient:")
+        node = int(input())
+        print("Computing local clustering coefficient for node {}...".format(node))
+        cc = {}
+        cc[node] = gl.LCC(G, node)
+        print("The local clustering coefficient for node {} is {}".format(node, cc[node]))
+    elif choice == 2:
+        print("Computing local clustering coefficient for all nodes in the graph...")
+        cc = gl.LCCs(G)
+    elif choice == 3:
+        print("Choose the number of iterations k:")
+        k = int(input())
+        print("Computing approximated local clustering coefficient for all nodes in the graph...")
+        cc = gl.EstimateLCCs(G, k)
+    elif choice == 4:
+        print("Computing global clustering coefficient...")
+        cc = {}
+        _, gcc = gl.globalClusteringCoefficient(G)
+        cc["G"] = gcc
+        print("The global clustering coefficient of G is {}".format(gcc))
+
+    print("Done!")
+
+    print("Do you wish to save the results in a .csv file [y/n]?")
+    save = input()
+    while save != 'y' and save != 'n':
+        print("Do you wish to save the results in a .csv file [y/n]?")
+        save = input()
+
+    if save == 'y':
+        print("Enter the name of the .csv (e.g. foo.csv):")
+        path = input()
+
+        if choice == 1 or choice == 2:
+            gl.saveDictionaryCSV(path, cc, ['node', 'local clustering coefficient'], order=True)
+        elif choice == 3:
+            gl.saveDictionaryCSV(path, cc, ['node', 'approximated local clustering coefficient'], order=True)
+        elif choice == 4:
+            gl.saveDictionaryCSV(path, cc, ['graph', 'global clustering coefficient'], order=True)
+
+    if choice == 2 or choice == 3:
+        print("Do you want to visualize a ranking of the values [y/n]?")
+        rank = input()
+        while rank != 'y' and rank != 'n':
+            print("Do you want to visualize a ranking of the values [y/n]?")
+            rank = input()
+
+        if rank == 'y':
+            print("Descending order or ascending order (desc/asc)?")
+            order = input()
+            while order != 'desc' and order != 'asc':
+                print("Descending order or ascending order (desc/asc)?")
+                order = input()
+
+            if order == 'desc':
+                ordered_dictionary = {k: v for k, v in sorted(cc.items(), key=lambda item: item[1], reverse=True)}
+            elif order == 'asc':
+                ordered_dictionary = {k: v for k, v in sorted(cc.items(), key=lambda item: item[1])}
+
+            print("How long should the ranking be? Indicate the number n of nodes to be considered:")
+            n = int(input())
+
+            ranking = {k: ordered_dictionary[k] for k in list(ordered_dictionary)[:n]}
+            gl.printRanking(ranking, ['node', 'value'])
+
+            print("Do you wish to save the ranking results in a .csv file [y/n]?")
+            save_ranking = input()
+            while save_ranking != 'y' and save_ranking != 'n':
+                print("Do you wish to save the ranking results in a .csv file [y/n]?")
+                save_ranking = input()
+
+            if save_ranking == 'y':
+                print("Enter the name of the .csv (e.g. foo.csv):")
+                path_ranking = input()
+
+                gl.saveDictionaryCSV(path_ranking, ranking, ['node', 'value'], order=False)
+
+
+# def manageMotifs(G):
+    # CODICE MOTIFS
 
 
 ########       CREATION OF THE GRAPH
-twitchGraph = nx.Graph()
-#twitchNodes = pd.read_csv('twitch_gamers/large_twitch_features.csv')
-twitchEdges = pd.read_csv('twitch_gamers/large_twitch_edges.csv')
-twitchGraph = nx.from_pandas_edgelist(twitchEdges, 'numeric_id_1', 'numeric_id_2')
 
+print("Select the graph you want to use for testing [1/2]: ")
+print("1 <- Twitch Gamers Social Network")
+print("2 <- Example graph")
+graph = int(input())
 
-Graph_test=nx.Graph()
-Graph_test.add_nodes_from([0, 1, 2, 3, 4, 5, 6])
-Graph_test.add_edges_from([(0, 1),(0,3),(1, 2), (1, 3), (2, 4), (3, 4), (3, 5), (4, 6), (5, 6)])
-G=Graph_test
+while graph != 1 and graph != 2:
+    print("Select the graph you want to use for testing [1/2]: ")
+    print("1 <- Twitch Gamers Social Network")
+    print("2 <- Example graph")
+    graph = int(input())
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+G = nx.Graph()
+if graph == 1:
+    print("Loading Twitch Gamers Social Network graph...")
+    twitchNodes = pd.read_csv('twitch_gamers/large_twitch_features.csv')
+    twitchEdges = pd.read_csv('twitch_gamers/large_twitch_edges.csv')
+    G = nx.from_pandas_edgelist(twitchEdges, 'numeric_id_1', 'numeric_id_2')
+elif graph == 2:
+    print("Creating example graph...")
+    G.add_nodes_from([0, 1, 2, 3, 4, 5, 6])
+    G.add_edges_from([(0, 1), (0, 3), (1, 2), (1, 3), (2, 4), (3, 4), (3, 5), (4, 6), (5, 6)])
+print("Done!")
 
 
 ########       MENU'
-print('What do you want to compute?:\n   0- Drawing Graph\n   1- Centralities\n   2- Clustering Coefficients   \n   3- Motifs (ESU)')
-value = input()
 
+exit = False
 
-########       DRAWING GRAPH
-pos = nx.spring_layout(G, seed=675)
-gl.drawGraph(G,pos)
+while not exit:
+    print('Select what do you want to do [1/2/3/4]:')
+    print("1 <- Draw Graph (not recommended for Twitch Gamers Social Network)")
+    print("2 <- Compute Centralities")
+    print("3 <- Compute Clustering coefficients")
+    print("4 <- Compute Motifs (ESU)")
+    choice = int(input())
 
+    while choice != 1 and choice != 2 and choice != 3 and choice != 4:
+        print('Select what do you want to do [1/2/3/4]:')
+        print("1 <- Draw Graph (not recommended for Twitch Gamers Social Network)")
+        print("2 <- Compute Centralities")
+        print("3 <- Compute Clustering coefficients")
+        print("4 <- Compute Motifs (ESU)")
+        choice = int(input())
 
+    if choice == 1:
+        manageDrawing(G)
+    elif choice == 2:
+        manageCentralities(G)
+    elif choice == 3:
+        manageClusteringCoefficients(G)
+    # elif choice == 4:
+        # manageMotifs(G)
 
+    print("Do you want to compute some other measures [y/n]?")
+    choice_exit = input()
+    while choice_exit != 'y' and choice_exit != 'n':
+        print("Do you want to compute some other measures [y/n]?")
+        choice_exit = input()
 
-
-
-########       CENTRALITIES
-###            Betweeness Centrality
-print("Betweeness Centrality")
-betw_exact=nx.betweenness_centrality(G)
-print(betw_exact)
-#gl.saveDictionaryCSV('test_exact_Between.csv',betw_exact,['node', 'value'],order=True)
-
-###            Approximate Betweeness
-print("\n\nStarting computing betweeness Centrality...")
-betw_approximate = gl.approximated_betweenness_centrality(G, 0.01)
-print(betw_approximate)
-#gl.saveDictionaryCSV('test_approximated_betweenness_results.csv', betw_approximate, ['node', 'betweenness centrality'], order=True)
-
-
-gl.draw(G, pos, betw_exact, 'EXACT Betweenness Centrality')
-gl.draw(G, pos, betw_approximate, 'APPROXIMATE Betweenness Centrality')
-
-
-
-###            Closeness Centrality
-print("\n\nCloseness Centrality")
-clos_exact=nx.closeness_centrality(G)
-print(clos_exact)
-#gl.saveDictionaryCSV('test_exact_Close.csv',clos_exact,['node', 'value'],order=True)
-
-###            Approximate Closeness
-print("\n\nStarting computing closeness centrality...")
-print('choose K (number of iterations)\nFor good approximation (with epsilon = 0.1) choose  k=',(math.log10(len(list(G.nodes)))/0.01))
-k = input()
-clos_approximate = gl.approximated_closeness_centrality(G,int(k))
-print(clos_approximate)
-#gl.saveDictionaryCSV('test_approximated_betweenness_results.csv', clos_approximate, ['node', 'betweenness centrality'], order=True)
-
-
-gl.draw(G, pos, clos_exact, 'EXACT Closeness Centrality')
-gl.draw(G, pos, clos_approximate, 'APPROXIMATE Closeness Centrality')
-
-
-
-
-
-########       CLUSTERING COEFFICIENTS
-
-###            Local Clustering Coefficient
-
-print('\n\nLocal Clustering Coefficient')
-lccs_exact=gl.LCCs(G)
-print(lccs_exact)
-# gl.saveDictionaryCSV('exact_localClusteringCoefficients.csv',lccs_exact,['node', 'local_CC'],order=True)
-
-
-###            Approximate Local Clustering Coefficient
-print('\n\nApproximate Local Clustering Coefficient')
-k=int(len(list(G.nodes))/2)
-estimateLccs=gl.EstimateLCCs(G,k)
-print(estimateLccs)
-# gl.saveDictionaryCSV('ApproxLCC_k'+str(k)+'.csv',estimateLccs,['node', 'Approx_local_CC'],order=True)
-
-
-gl.draw(G, pos, lccs_exact, 'EXACT Local Clustering Coefficients')
-gl.draw(G, pos, estimateLccs, 'APPROXIMATE Local Clustering Coefficients')
-
-
-
-###            Global Clustering Coefficient
-print('\nGlobal Clustering Coefficient')
-num_triangle,cc=gl.globalClusteringCoefficient(G)
-print('     Num Real Triangles= ',num_triangle/6)
-print('     Clsutering Coeff= ',cc)
-
-# number_of_triangles = sum(nx.triangles(G).values()) / 3
-# print('NetwrokX:')
-# print('     NumTriangles= ',number_of_triangles)
-# print('     Clsutering Coeff= ',number_of_triangles/scipy.special.binom(len(list(G.nodes)), 3))
-
-
-
-
-########        MOTIFS - ESU algorithm
-print('\n\nMotifs')
-motifs=gl.enumerateSubgraphs(G,2)
-print(gl.countSubgraphs(motifs))
-
-
+    if choice_exit == 'n':
+        exit = True
