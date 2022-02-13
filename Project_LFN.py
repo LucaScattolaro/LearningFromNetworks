@@ -219,7 +219,7 @@ def manageClusteringCoefficients(G):
 def manageMotifs(G):
     print("Choose the number of nodes of the graphlets to count:")
     k = int(input())
-    subgraphs = gl.enumerateSubgraphs(graph,k)
+    subgraphs = gl.enumerateSubgraphs(G,k)
     count = gl.countSubgraphs(subgraphs)
     print("There are "+str(count)+" subgraphs with "+ str(k) +" nodes.")
     print("Done!")
@@ -232,7 +232,7 @@ def manageMotifs(G):
     if save == 'y':
         print("Enter the name of the .csv (e.g. foo.csv):")
         path = input()
-        mt=[k,count]
+        mt={k:count}
         gl.saveDictionaryCSV(path, mt, ['nodes','count'], order=False)
 
 
