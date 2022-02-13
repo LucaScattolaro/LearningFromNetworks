@@ -3,6 +3,8 @@ import pandas as pd
 import graphLibrary as gl
 import math
 
+
+
 def manageDrawing(G):
     print("Drawing graph...")
     pos = nx.spring_layout(G, seed=675)
@@ -26,24 +28,34 @@ def manageCentralities(G):
         print("4 <- Approximated Betweenness Centrality")
         choice = int(input())
 
+
+    title=''
     if choice == 1:
+        title="closeness centrality"
         print("Computing closeness centrality...")
         centralities = nx.closeness_centrality(G)
     elif choice == 2:
         print("Choose k (number of iterations); For a good approximation (with epsilon = 0.1) choose k = {}".format(int(math.log10(len(list(G.nodes))) / 0.01)))
         k = int(input())
+        title="approximated closeness centrality"
         print("Computing approximated closeness centrality...")
         centralities = gl.approximated_closeness_centrality(G, k)
     elif choice == 3:
+        title="betweenness centrality"
         print("Computing betweenness centrality...")
         centralities = nx.betweenness_centrality(G)
     elif choice == 4:
         print("Choose epsilon (additive error from real values):")
         epsilon = float(input())
+        title="approximated betweenness centrality"
         print("Computing approximated betweenness centrality...")
         centralities = gl.approximated_betweenness_centrality(G, epsilon)
 
     print("Done!")
+    if graph==2:
+        pos = nx.spring_layout(G, seed=675)
+        gl.draw(G, pos, centralities, title)
+
 
     print("Do you wish to save the results in a .csv file [y/n]?")
     save = input()
@@ -117,6 +129,8 @@ def manageClusteringCoefficients(G):
         print("4 <- Global Clustering Coefficient")
         choice = int(input())
 
+
+    title=""
     if choice == 1:
         print("Choose the node for which you want to compute the local clustering coefficient:")
         node = int(input())
@@ -125,11 +139,13 @@ def manageClusteringCoefficients(G):
         cc[node] = gl.LCC(G, node)
         print("The local clustering coefficient for node {} is {}".format(node, cc[node]))
     elif choice == 2:
+        title="local clustering coefficient"
         print("Computing local clustering coefficient for all nodes in the graph...")
         cc = gl.LCCs(G)
     elif choice == 3:
         print("Choose the number of iterations k:")
         k = int(input())
+        title="approximated local clustering coefficient"
         print("Computing approximated local clustering coefficient for all nodes in the graph...")
         cc = gl.EstimateLCCs(G, k)
     elif choice == 4:
@@ -140,6 +156,10 @@ def manageClusteringCoefficients(G):
         print("The global clustering coefficient of G is {}".format(gcc))
 
     print("Done!")
+    if graph==2 and choice!=4 and choice!=1:
+        pos = nx.spring_layout(G, seed=675)
+        gl.draw(G, pos, cc, title)
+
 
     print("Do you wish to save the results in a .csv file [y/n]?")
     save = input()
