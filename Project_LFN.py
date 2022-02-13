@@ -216,25 +216,6 @@ def manageClusteringCoefficients(G):
                 gl.saveDictionaryCSV(path_ranking, ranking, ['node', 'value'], order=False)
 
 
-def manageMotifs(G):
-    print("Choose the number of nodes of the graphlets to count:")
-    k = int(input())
-    subgraphs = gl.enumerateSubgraphs(G,k)
-    count = gl.countSubgraphs(subgraphs)
-    print("There are "+str(count)+" subgraphs with "+ str(k) +" nodes.")
-    print("Done!")
-    print("Do you wish to save the results in a .csv file [y/n]?")
-    save = input()
-    while save != 'y' and save != 'n':
-        print("Do you wish to save the results in a .csv file [y/n]?")
-        save = input()
-
-    if save == 'y':
-        print("Enter the name of the .csv (e.g. foo.csv):")
-        path = input()
-        mt={k:count}
-        gl.saveDictionaryCSV(path, mt, ['nodes','count'], order=False)
-
 
 ########       CREATION OF THE GRAPH
 
@@ -267,15 +248,14 @@ print("Done!")
 exit = False
 
 while not exit:
-    print('Select what do you want to do [1/2/3/4]:')
+    print('Select what do you want to do [1/2/3]:')
     print("1 <- Draw Graph (not recommended for Twitch Gamers Social Network)")
     print("2 <- Compute Centralities")
     print("3 <- Compute Clustering coefficients")
-    print("4 <- Compute Motifs (ESU)")
     choice = int(input())
 
-    while choice != 1 and choice != 2 and choice != 3 and choice != 4:
-        print('Select what do you want to do [1/2/3/4]:')
+    while choice != 1 and choice != 2 and choice != 3:
+        print('Select what do you want to do [1/2/3]:')
         print("1 <- Draw Graph (not recommended for Twitch Gamers Social Network)")
         print("2 <- Compute Centralities")
         print("3 <- Compute Clustering coefficients")
@@ -288,8 +268,6 @@ while not exit:
         manageCentralities(G)
     elif choice == 3:
         manageClusteringCoefficients(G)
-    # elif choice == 4:
-        # manageMotifs(G)
 
     print("Do you want to compute some other measures [y/n]?")
     choice_exit = input()
