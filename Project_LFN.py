@@ -259,7 +259,6 @@ while not exit:
         print("1 <- Draw Graph (not recommended for Twitch Gamers Social Network)")
         print("2 <- Compute Centralities")
         print("3 <- Compute Clustering coefficients")
-        print("4 <- Compute Motifs (ESU)")
         choice = int(input())
 
     if choice == 1:
